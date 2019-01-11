@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public class TCPClient {
 
@@ -16,6 +17,23 @@ public class TCPClient {
 		
 		//1. 소켓생성
 		socket = new Socket();
+		
+		//Socket Buffer Size 참조
+		int receiveBufferSize = socket.getReceiveBufferSize();
+		int sendBufferSize = socket.getSendBufferSize();
+
+		//Socket Buffer Size 변경
+		socket.setReceiveBufferSize( 1024*10 );
+		socket.setSendBufferSize( 1024*10 );
+		
+		//(Nagle 알고리즘 off)
+		socket.setTcpNoDelay(true);
+		
+		
+		//데이터 읽기에 타임아웃 설정
+		socket.setSoTimeout(1);
+		
+		
 		
 		//2. 서버 연결
 		socket.connect(new InetSocketAddress(SERVER_IP,SERVER_PORT));
@@ -40,7 +58,11 @@ public class TCPClient {
 		data = new String(buffer,0,readByteCount,"UTF-8");
 		System.out.println("[client] received:"+data);
 		
-		} catch (IOException e) {
+		} catch(SocketTimeoutException ex)
+		{
+			System.out.println("[client] time out");
+		}
+		catch (IOException e) {
 		e.printStackTrace();
 		}finally
 		{

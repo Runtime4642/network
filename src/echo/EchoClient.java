@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -25,7 +26,7 @@ public class EchoClient {
 		socket.connect(new InetSocketAddress(SERVER_IP,SERVER_PORT));
 		System.out.println("[client] connected");
 		BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
-		PrintWriter pw = new PrintWriter(socket.getOutputStream(),true);
+		PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
 		while(true) {
 		//3.IOStream 받아오기
 	

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class EchoServer {
 
-	private static final int PORT =5003;
+	private static final int PORT =5002;
 
 	public static void main(String[] args) {
 				ServerSocket serverSocket=null;
